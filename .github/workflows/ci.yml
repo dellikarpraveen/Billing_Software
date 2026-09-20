@@ -39,6 +39,16 @@ jobs:
           Write-Host "Repository files (depth=2):"
           Get-ChildItem -Path . -Recurse -File -Depth 2 | ForEach-Object { Write-Host $_.FullName }
 
+      - name: NuGet restore legacy solution (diagnostic)
+        shell: powershell
+        run: |
+          Write-Host "Running nuget restore for solution (if available)..."
+          if (Test-Path ./Billing_Software.slnx) {
+            nuget restore ./Billing_Software.slnx
+          } else {
+            Write-Host "Billing_Software.slnx not found; skipping nuget restore."
+          }
+
       - name: Build legacy WinForms project with MSBuild
         shell: powershell
         run: |
